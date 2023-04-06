@@ -11,6 +11,10 @@ class OnBoardingBloc extends Bloc<OnBoardingEvent, OnBoardingState> {
     on<OnBoardingEvent>((event, emit) {
       int currentPageIndex = 0;
 
+      if (event is OnBoardingPageIndex) {
+        emit(OnBoardingPageChangedState(pageIndex: currentPageIndex));
+      }
+
       if (event is SkipButtonPressed) {
         emit(OnBoardingCompletedState());
       }

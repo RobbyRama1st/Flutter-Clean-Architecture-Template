@@ -12,7 +12,7 @@ class AppModule extends Module {
         ChildRoute('/',
             child: (_, __) => SplashPage(),
             transition: TransitionType.defaultTransition),
-        ChildRoute('/intro', child: (_, __) => OnBoardingPage()),
+        ChildRoute('/onboarding', child: (_, __) => OnBoardingPage()),
         ChildRoute('/home',
             child: (_, __) => HomePage(
                   title: "Home",

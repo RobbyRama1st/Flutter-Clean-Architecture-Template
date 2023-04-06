@@ -48,7 +48,7 @@ class _SplashPageState extends State<SplashPage> {
 
           if (state is SplashSuccess) {
             logger.d("onSplashSuccess");
-            Modular.to.navigate('/intro');
+            Modular.to.navigate('/onboarding');
           }
         },
         child: Scaffold(
