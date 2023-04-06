@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_clean_achitecture/data/models/onboarding_item.dart';
 
 class OnBoardingPage extends StatefulWidget {
@@ -9,6 +10,9 @@ class OnBoardingPage extends StatefulWidget {
 }
 
 class _OnBoardingPageState extends State<OnBoardingPage> {
+  final _controller = PageController();
+  int _currentIndex = 0;
+
   // Create list of OnboardingItem for 3 pages
   List<OnBoardingItem> onboardingItems = [
     OnBoardingItem(
@@ -38,9 +42,26 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text(
-          "Welcome to OnBoarding Page",
+      body: AnnotatedRegion(
+        value: SystemUiOverlayStyle.light,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: const [0.1, 0.4, 0.7, 0.9],
+              colors: const [
+                Color(0xFF3594DD),
+                Color(0xFF4569DB),
+                Color(0xFF5036D5),
+                Color(0xFF5B16D0)
+              ],
+            ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 40.0),
+            child: Column(),
+          ),
         ),
       ),
     );
