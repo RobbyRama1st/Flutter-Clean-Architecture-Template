@@ -9,13 +9,6 @@ abstract class OnBoardingState extends Equatable {
 
 class OnBoardingInitial extends OnBoardingState {}
 
-class OnBoardingPageChangedState extends OnBoardingState {
-  final int pageIndex;
-
-  const OnBoardingPageChangedState({required this.pageIndex});
-
-  @override
-  List<Object> get props => [pageIndex];
-}
+class OnBoardingPageChangedState extends OnBoardingState {}
 
 class OnBoardingCompletedState extends OnBoardingState {}

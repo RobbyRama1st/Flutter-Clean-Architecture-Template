@@ -1,29 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_clean_achitecture/data/models/onboarding_item.dart';
 import 'package:flutter_clean_achitecture/presentation/blocs/onBoarding-bloc/onboarding_bloc.dart';
+import 'package:flutter_clean_achitecture/presentation/widgets/slider_onboarding.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
-// Create list of OnboardingItem for 3 pages
-List<OnBoardingItem> onboardingItems = [
-  OnBoardingItem(
-    title: "Welcome to MyApp",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    image: "assets/images/img_onboarding_1.png",
-  ),
-  OnBoardingItem(
-    title: "Get Started",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    image: "assets/images/img_onboarding_2.png",
-  ),
-  OnBoardingItem(
-    title: "Explore Features",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    image: "assets/images/img_onboarding_3.png",
-  ),
-];
 
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({super.key});
@@ -34,9 +16,36 @@ class OnBoardingPage extends StatefulWidget {
 
 class _OnBoardingPageState extends State<OnBoardingPage> {
   var logger = Logger();
-  final _onBoardingBloc = OnBoardingBloc(onboardingItems: onboardingItems);
+  final _onBoardingBloc = OnBoardingBloc();
   final _controller = PageController();
-  // int _currentIndex = 0;
+
+  // Create list of for 3 pages
+  List<SliderOnBoarding> pages = [
+    SliderOnBoarding(
+      title: "Welcome to MyApp",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      image: "assets/images/img_onboarding_1.png",
+    ),
+    SliderOnBoarding(
+      title: "Get Started",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      image: "assets/images/img_onboarding_2.png",
+    ),
+    SliderOnBoarding(
+      title: "Explore Features",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      image: "assets/images/img_onboarding_3.png",
+    ),
+  ];
+
+  int _currentPage = 0;
+
+  void _onPageChanged(int page) {
+    setState(() {
+      _currentPage = page;
+      _onBoardingBloc.add(OnBoardingPageChanged());
+    });
+  }
 
   @override
   void initState() {
@@ -52,11 +61,20 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       child: BlocListener<OnBoardingBloc, OnBoardingState>(
         listener: (context, state) {
           if (state is OnBoardingPageChangedState) {
-            logger.d("onBOardingPageChange");
+            logger.d("onBoardingPageChange");
           }
 
           if (state is OnBoardingCompletedState) {
             logger.d("onBoardingComplete");
+            Fluttertoast.showToast(
+              msg: "OnBoarding Completed!",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0,
+            );
           }
         },
         child: Scaffold(
@@ -76,109 +94,89 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   ],
                 ),
               ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 40.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    SizedBox(
-                      child: PageView(
-                        controller: _controller,
-                        onPageChanged: (int page) {
-                          _onBoardingBloc.add(NextButtonPressed());
-                        },
-                        children: onboardingItems.map((item) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Image.asset(
-                                item.image!,
-                                height: 300.0,
-                                width: 300.0,
-                              ),
-                              SizedBox(height: 30.0),
-                              Text(
-                                item.title!,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  PageView.builder(
+                    scrollDirection: Axis.horizontal,
+                    controller: _controller,
+                    onPageChanged: (value) {
+                      setState(() {
+                        _onPageChanged(value);
+                      });
+                    },
+                    itemCount: pages.length,
+                    itemBuilder: (context, int index) {
+                      return pages[index];
+                    },
+                  ),
+                  Positioned(
+                    bottom: 170,
+                    child: SmoothPageIndicator(
+                      controller: _controller, // PageController
+                      count: pages.length,
+                      effect: JumpingDotEffect(
+                          dotWidth: 12.0,
+                          dotHeight: 12.0,
+                          verticalOffset: 12,
+                          dotColor: Color(0xFF7B51D3),
+                          activeDotColor: Colors.white),
+                      onDotClicked: (index) {},
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 60.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: TextButton(
+                              onPressed: () {
+                                _onBoardingBloc.add(SkipButtonPressed());
+                              },
+                              child: Text(
+                                'Skip',
                                 style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 24.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                    color: Colors.white, fontSize: 15.0),
                               ),
-                              SizedBox(height: 15.0),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 40.0),
-                                child: Text(
-                                  item.description!,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16.0,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                    // This for dot indicator
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SmoothPageIndicator(
-                          controller: _controller, // PageController
-                          count: onboardingItems.length,
-
-                          effect: JumpingDotEffect(
-                              dotWidth: 12.0,
-                              dotHeight: 12.0,
-                              verticalOffset: 12,
-                              dotColor: Color(0xFF7B51D3),
-                              activeDotColor:
-                                  Colors.white), // your preferred effect
-                          onDotClicked: (index) {},
-                        ),
-                      ],
-                    ),
-                    // This for bottom button action
-                    Expanded(
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20.0, vertical: 20.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 15.0),
-                                child: Text(
-                                  'Skip',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16.0),
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  _controller.nextPage(
-                                      duration: Duration(microseconds: 300),
-                                      curve: Curves.easeIn);
-                                },
-                                child: Text(
-                                  'Next',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 15.0),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
-                        ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                fixedSize: _currentPage < pages.length - 1
+                                    ? Size(100, 44)
+                                    : Size(150, 44),
+                                foregroundColor: Colors.white,
+                                backgroundColor: Colors.white,
+                                shape: const StadiumBorder(),
+                              ),
+                              onPressed: () {
+                                _currentPage < pages.length - 1
+                                    ? _controller.nextPage(
+                                        duration: Duration(milliseconds: 200),
+                                        curve: Curves.easeInQuint)
+                                    : _onBoardingBloc
+                                        .add(GetStartedButtonPressed());
+                              },
+                              child: Text(
+                                _currentPage < pages.length - 1
+                                    ? 'Next'
+                                    : 'Get Started',
+                                style: TextStyle(
+                                    color: Color(0xFF5B16D0), fontSize: 15.0),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

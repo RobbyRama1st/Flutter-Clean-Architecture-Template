@@ -7,19 +7,8 @@ abstract class OnBoardingEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class OnBoardingPageIndex extends OnBoardingEvent {
-  final int pageIndex;
-
-  const OnBoardingPageIndex(this.pageIndex);
-
-  @override
-  List<Object> get props => [pageIndex];
-}
+class OnBoardingPageChanged extends OnBoardingEvent {}
 
 class SkipButtonPressed extends OnBoardingEvent {}
-
-class PreviousButtonPressed extends OnBoardingEvent {}
-
-class NextButtonPressed extends OnBoardingEvent {}
 
 class GetStartedButtonPressed extends OnBoardingEvent {}
