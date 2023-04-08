@@ -35,7 +35,7 @@ class _SplashPageState extends State<SplashPage> {
           }
 
           if (state is SplashFailed) {
-            logger.d("onSplashLoaded");
+            logger.d("onSplashFailed");
             Fluttertoast.showToast(
                 msg: state.message,
                 toastLength: Toast.LENGTH_SHORT,

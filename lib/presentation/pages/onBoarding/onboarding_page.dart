@@ -19,7 +19,6 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   final _onBoardingBloc = OnBoardingBloc();
   final _controller = PageController();
 
-  // Create list of for 3 pages
   List<SliderOnBoarding> pages = [
     SliderOnBoarding(
       title: "Welcome to MyApp",
@@ -100,11 +99,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   PageView.builder(
                     scrollDirection: Axis.horizontal,
                     controller: _controller,
-                    onPageChanged: (value) {
-                      setState(() {
-                        _onPageChanged(value);
-                      });
-                    },
+                    onPageChanged: _onPageChanged,
                     itemCount: pages.length,
                     itemBuilder: (context, int index) {
                       return pages[index];
