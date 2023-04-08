@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_clean_achitecture/presentation/blocs/onBoarding-bloc/onboarding_bloc.dart';
 import 'package:flutter_clean_achitecture/presentation/widgets/slider_onboarding.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -46,6 +47,17 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
     });
   }
 
+  void _skipButtonPressed() {
+    _onBoardingBloc.add(SkipButtonPressed());
+  }
+
+  void _nextButtonPressed() {
+    _currentPage < pages.length - 1
+        ? _controller.nextPage(
+            duration: Duration(milliseconds: 200), curve: Curves.easeInQuint)
+        : _onBoardingBloc.add(GetStartedButtonPressed());
+  }
+
   @override
   void initState() {
     super.initState();
@@ -65,15 +77,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
           if (state is OnBoardingCompletedState) {
             logger.d("onBoardingComplete");
-            Fluttertoast.showToast(
-              msg: "OnBoarding Completed!",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.CENTER,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 16.0,
-            );
+            Modular.to.navigate('/welcome');
           }
         },
         child: Scaffold(
@@ -129,9 +133,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 20.0),
                             child: TextButton(
-                              onPressed: () {
-                                _onBoardingBloc.add(SkipButtonPressed());
-                              },
+                              onPressed: _skipButtonPressed,
                               child: Text(
                                 'Skip',
                                 style: TextStyle(
@@ -150,14 +152,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                                 backgroundColor: Colors.white,
                                 shape: const StadiumBorder(),
                               ),
-                              onPressed: () {
-                                _currentPage < pages.length - 1
-                                    ? _controller.nextPage(
-                                        duration: Duration(milliseconds: 200),
-                                        curve: Curves.easeInQuint)
-                                    : _onBoardingBloc
-                                        .add(GetStartedButtonPressed());
-                              },
+                              onPressed: _nextButtonPressed,
                               child: Text(
                                 _currentPage < pages.length - 1
                                     ? 'Next'
