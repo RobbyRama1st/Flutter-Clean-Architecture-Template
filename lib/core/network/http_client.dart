@@ -21,8 +21,8 @@ class HttpClient {
   Dio _getDio() {
     final options = BaseOptions(
       baseUrl: config.apiBaseUrl!,
-      connectTimeout: 20000 as Duration,
-      receiveTimeout: 30000 as Duration,
+      connectTimeout: Duration(milliseconds: 20000),
+      receiveTimeout: Duration(milliseconds: 30000),
       receiveDataWhenStatusError: true,
       headers: {'isToken': pref.isKeyExists(PrefsConstants.keyAccessToken)},
     );

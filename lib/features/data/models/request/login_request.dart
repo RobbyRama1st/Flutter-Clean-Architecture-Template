@@ -1,19 +1,19 @@
 class LoginRequest {
-  final String? username;
+  final String? email;
   final String? password;
 
-  LoginRequest({this.username, this.password});
+  LoginRequest({this.email, this.password});
 
   factory LoginRequest.fromJson(Map<String, dynamic> json) {
     return LoginRequest(
-      username: json['username'],
+      email: json['email'],
       password: json['password'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'username': username,
+      'email': email,
       'password': password,
     };
   }

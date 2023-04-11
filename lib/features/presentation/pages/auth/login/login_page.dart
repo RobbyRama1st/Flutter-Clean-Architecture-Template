@@ -19,8 +19,8 @@ class _LoginPageState extends State<LoginPage> {
     _loginBloc.add(
       MakeLoginRequest(
         LoginRequest(
-          username: "Joeminority06@gmail.com",
-          password: "aankanka",
+          email: "Joeminority06@gmail.com",
+          password: "@Qq1234567",
         ),
       ),
     );

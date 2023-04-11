@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter_clean_achitecture/core/error/exception.dart';
 import 'package:flutter_clean_achitecture/core/error/failure.dart';
 import 'package:flutter_clean_achitecture/features/data/datasources/datasource_factory.dart';
 import 'package:flutter_clean_achitecture/features/data/models/request/login_request.dart';
