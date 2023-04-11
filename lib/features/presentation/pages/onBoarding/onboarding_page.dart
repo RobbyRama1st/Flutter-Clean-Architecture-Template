@@ -126,7 +126,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Padding(
-                      padding: EdgeInsets.only(bottom: 60.0),
+                      padding: EdgeInsets.only(bottom: 20.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[

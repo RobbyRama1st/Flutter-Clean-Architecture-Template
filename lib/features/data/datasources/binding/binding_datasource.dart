@@ -9,6 +9,7 @@ abstract class BindingDataSource {
 
   ///[check] is app fisrt launch
   Stream<bool> isAppFirstLaunch();
+  Stream<void> setAppFirstLaunch(bool isFirstLaunch);
 
   ///[check] is user already [login]
   Stream<bool> isLoggedIn();

@@ -3,7 +3,6 @@ class Config {
   final String? apiBaseUrl;
   final String? apiSentry;
 
-  // ignore: sort_constructors_first
   Config({
     this.flavorName,
     this.apiBaseUrl,

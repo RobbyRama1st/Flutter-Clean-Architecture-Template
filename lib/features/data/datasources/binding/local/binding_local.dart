@@ -1,3 +1,4 @@
+import 'package:flutter_clean_achitecture/features/common/constants/prefs_constant.dart';
 import 'package:flutter_clean_achitecture/features/data/datasources/binding/binding_datasource.dart';
 import 'package:flutter_clean_achitecture/features/data/datasources/binding/cache/shared_pref.dart';
 import 'package:flutter_clean_achitecture/features/domain/entities/login/login_entity.dart';
@@ -19,8 +20,13 @@ class BindingLocal implements BindingDataSource {
   }
 
   @override
-  Stream<bool> isAppFirstLaunch() {
-    throw UnimplementedError();
+  Stream<bool> isAppFirstLaunch() async* {
+    yield pref!.getBool(PrefsConstants.keyAppFirstLaunch) ?? true;
+  }
+
+  @override
+  Stream<void> setAppFirstLaunch(bool isFirstLaunch) async* {
+    yield pref!.putBool(PrefsConstants.keyAppFirstLaunch, isFirstLaunch);
   }
 
   @override

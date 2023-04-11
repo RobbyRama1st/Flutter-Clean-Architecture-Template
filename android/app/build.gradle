@@ -59,6 +59,33 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
         }
+        debug {
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    flavorDimensions "app"
+
+    productFlavors {
+
+        development {
+            dimension "app"
+            applicationId "com.example.flutter_clean_achitecture"
+            resValue "string", "app_name", "Clean Architecture (Development)"
+        }
+
+        staging {
+            dimension "app"
+            applicationId "com.example.flutter_clean_achitecture"
+            resValue "string", "app_name", "Clean Architecture (Stagging)"
+        }
+
+        production {
+            dimension "app"
+            applicationId "com.example.flutter_clean_achitecture"
+            resValue "string", "app_name", "Clean Architecture"
+        }
+
     }
 }
 
