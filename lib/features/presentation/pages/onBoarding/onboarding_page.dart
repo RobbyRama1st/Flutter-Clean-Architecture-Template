@@ -77,7 +77,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
           if (state is OnBoardingCompletedState) {
             logger.d("onBoardingComplete");
-            Modular.to.navigate('/welcome');
+            Modular.to.navigate('/login');
           }
         },
         child: Scaffold(

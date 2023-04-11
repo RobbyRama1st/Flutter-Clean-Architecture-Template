@@ -46,9 +46,14 @@ Future<void> init() async {
   ///[Bloc]
   ///
   sl.registerFactory(() => SplashBloc());
-  sl.registerFactory(() => LoginBloc());
+  sl.registerFactory(() => LoginBloc(
+        loginUseCase: sl(),
+      ));
   sl.registerFactory(
-    () => LanguageBloc(),
+    () => LanguageBloc(
+      getPreferredLanguageUseCase: sl(),
+      updateLanguageUseCase: sl(),
+    ),
   );
 
   ///[UseCase]

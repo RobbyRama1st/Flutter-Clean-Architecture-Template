@@ -4,7 +4,7 @@ class FlavorSettings {
   FlavorSettings.development() {
     Config.getInstance(
       flavorName: 'development',
-      apiBaseUrl: 'http://dev-url',
+      apiBaseUrl: 'https://api3.julizar.com',
       apiSentry: 'http://sentry-url',
     );
   }
