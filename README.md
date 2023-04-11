@@ -11,10 +11,10 @@ This is a boilerplate Flutter app that follows the Clean Architecture pattern wi
 The app follows the following folder structure:
 
 - `lib`: Contains the main source code of the app.
-  - `app`: Contain the main app like routes, and main widget.
+  - `app`: Contains the main app like routes, and main widget.
   - `data`: Contains the data layer components, such as models, repositories, datasources.
-  - `di`: Contains the dependency injection
-  - `domain`: Contains the domain layer components, such as entities, use cases, and repositories.
+  - `di`: Contains the dependency injection.
+  - `domain`: Contains the domain layer components, such as entities, repositories and use cases.
   - `presentation`: Contains the presentation layer components, such as BLoCs, pages, and widgets.
   - `utils`: Contains utility classes or helper functions used across the app.
 
