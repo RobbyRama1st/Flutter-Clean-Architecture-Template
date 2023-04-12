@@ -1,3 +1,5 @@
+import 'package:flutter_clean_achitecture/core/error/failure.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter_clean_achitecture/features/common/constants/prefs_constant.dart';
 import 'package:flutter_clean_achitecture/features/data/datasources/binding/binding_datasource.dart';
 import 'package:flutter_clean_achitecture/features/data/datasources/binding/cache/shared_pref.dart';
@@ -35,7 +37,7 @@ class BindingLocal implements BindingDataSource {
   }
 
   @override
-  Stream<LoginEntity> doLogin(LoginRequest request) {
+  Stream<Either<Failure, LoginEntity>> doLogin(LoginRequest request) {
     throw UnimplementedError();
   }
 }

@@ -16,19 +16,16 @@ class ServerFailure extends Failure {
 }
 
 class RequestFailure extends Failure {
-  /// code from server
-  final int code;
+  RequestFailure({
+    @required this.code,
+    @required this.message,
+  });
 
-  /// message from server
-  final String message;
-
-  /// data from server
-  final Object? data;
-
-  RequestFailure({required this.code, required this.message, this.data});
+  final int? code;
+  final String? message;
 
   @override
-  List<Object> get props => [code, message, data ?? ''];
+  List<Object> get props => [code!, message!];
 }
 
 class CacheFailure extends Failure {

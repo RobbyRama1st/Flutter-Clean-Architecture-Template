@@ -21,13 +21,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
         // Handle the result from the LoginUseCase
         emit.forEach(
-          loginUseCase.execute(event.request!),
+          loginUseCase.build(event.request!),
           onData: (Either<Failure, LoginEntity> eventRes) {
             return eventRes.fold(
               (failure) {
                 logger.d("failure ");
-                RequestFailure f = failure as RequestFailure;
-                return LoginFailed(f.message);
+                return LoginFailed(failure.toString());
               },
               (values) {
                 logger.d("success ");

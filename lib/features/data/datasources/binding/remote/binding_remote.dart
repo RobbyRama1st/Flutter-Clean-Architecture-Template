@@ -1,5 +1,6 @@
-import 'package:dio/dio.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter_clean_achitecture/core/env/config.dart';
+import 'package:flutter_clean_achitecture/core/error/failure.dart';
 import 'package:flutter_clean_achitecture/core/network/http_client.dart';
 import 'package:flutter_clean_achitecture/features/data/datasources/binding/binding_datasource.dart';
 import 'package:flutter_clean_achitecture/features/data/models/response/login_response.dart';
@@ -12,65 +13,6 @@ class BindingRemote implements BindingDataSource {
 
   final HttpClient client;
   late Config config;
-
-  Dio dio = Dio(
-    BaseOptions(
-      baseUrl: 'https://api3.julizar.com',
-      // connectTimeout: 500 * 1000,
-      // receiveTimeout: 500 * 1000,
-    ),
-  );
-
-  @override
-  Stream<LoginEntity> doLogin(LoginRequest request) async* {
-    try {
-      // Perform login request using HttpClient
-      final response = await client.dio.post(
-        "/v1/auth/login",
-        data: request.toJson(),
-      );
-
-      // Check for successful response
-      if (response.statusCode == 200) {
-        // Parse the response data into LoginEntity object
-        final data = LoginResponse.fromJson(response.data);
-
-        logger.d("code 200");
-        // Yield the loginEntity object
-        yield data;
-      } else if (response.statusCode == 422) {
-        final data = LoginResponse.fromJson(response.data);
-
-        logger.d("code 422");
-        // Yield the loginEntity object
-        yield data;
-      } else {
-        // Handle error response
-        // You can throw an exception or yield an error LoginEntity object here
-        // based on your requirement
-        logger.d("code 422");
-        yield LoginEntity(
-          accessToken: null,
-          tokenType: null,
-          expiresIn: null,
-          message: null,
-          errors: null,
-        );
-      }
-    } catch (error) {
-      // Handle any exception that may occur during the login request
-      // You can throw an exception or yield an error LoginEntity object here
-      // based on your requirement
-      logger.d('exception : ${error.toString()}');
-      yield LoginResponse(
-        accessToken: null,
-        tokenType: null,
-        expiresIn: null,
-        message: null,
-        errors: null,
-      );
-    }
-  }
 
   @override
   Stream<String?> getPreferredLanguage() {
@@ -95,5 +37,46 @@ class BindingRemote implements BindingDataSource {
   @override
   Stream<void> updatePreferredLanguage(String localeCode) {
     throw UnimplementedError();
+  }
+
+  @override
+  Stream<Either<Failure, LoginEntity>> doLogin(LoginRequest request) async* {
+    try {
+      final response = await client.dio.post(
+        '/v1/auth/login',
+        data: request.toJson(),
+      );
+
+      if (response.statusCode == 200) {
+        logger.d("success 200");
+        final data = LoginResponse.fromJson(response.data);
+        // Create a LoginEntity object from the login response
+        final loginEntity = LoginEntity(
+          // Set the properties based on the response data
+          accessToken: data.accessToken,
+          tokenType: data.tokenType,
+          expiresIn: data.expiresIn,
+        );
+        yield Right(loginEntity);
+      } else if (response.statusCode == 422) {
+        logger.d("failed 422");
+        yield Left(
+          RequestFailure(
+            code: response.statusCode,
+            message: response.data["message"] ?? "Email or password inccorrect",
+          ),
+        );
+      } else {
+        logger.d("failed 500");
+        yield Left(
+          ServerFailure(
+            error: response.data["message"] ?? "Something when wrong!",
+          ),
+        );
+      }
+    } catch (error) {
+      logger.d("Error cacth");
+      yield Left(AnotherFailure(error: error.toString()));
+    }
   }
 }

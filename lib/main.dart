@@ -53,7 +53,7 @@ Future<void> main() async {
       logger.d('🚀 APP API_SENTRY       : ${settings.apiSentry}');
     }
   }, (error, stackTrace) {
-    logger.e('❎ ERROR OTHER   :$error');
+    logger.e('❎ ERROR   :$error');
     logger.e('❎ STACKTRACE    :$stackTrace');
   });
 }

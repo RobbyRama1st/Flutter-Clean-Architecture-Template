@@ -24,10 +24,12 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Stream<Either<Failure, LoginEntity>> doLogin(LoginRequest body) {
-    return _bindingDataSourceFactory!
+  Stream<Either<Failure, LoginEntity>> doLogin(LoginRequest body) async* {
+    _bindingDataSourceFactory!
         .createData(DataSourceState.network)!
         .doLogin(body)
-        .map((event) => Right(event));
+        .map((event) {
+      if (event is Failure) {}
+    });
   }
 }
