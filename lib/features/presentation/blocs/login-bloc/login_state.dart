@@ -12,7 +12,7 @@ class LoginInitial extends LoginState {}
 class LoginLoading extends LoginState {}
 
 class LoginSuccess extends LoginState {
-  final LoginEntity response;
+  final LoginResponse response;
 
   const LoginSuccess(this.response);
 

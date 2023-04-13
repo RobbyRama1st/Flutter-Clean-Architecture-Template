@@ -7,25 +7,22 @@ abstract class Failure extends Equatable {
 }
 
 class ServerFailure extends Failure {
-  ServerFailure({@required this.error});
+  ServerFailure({@required this.message});
 
-  final dynamic error;
+  final dynamic message;
 
   @override
-  List<Object> get props => [error];
+  List<Object> get props => [message];
 }
 
 class RequestFailure extends Failure {
   RequestFailure({
-    @required this.code,
     @required this.message,
   });
-
-  final int? code;
-  final String? message;
+  final dynamic message;
 
   @override
-  List<Object> get props => [code!, message!];
+  List<Object> get props => [message];
 }
 
 class CacheFailure extends Failure {
@@ -38,10 +35,10 @@ class CacheFailure extends Failure {
 }
 
 class AnotherFailure extends Failure {
-  final dynamic error;
+  final dynamic message;
 
-  AnotherFailure({@required this.error});
+  AnotherFailure({@required this.message});
 
   @override
-  List<Object> get props => [error];
+  List<Object> get props => [message];
 }

@@ -25,6 +25,9 @@ class HttpClient {
       receiveTimeout: Duration(milliseconds: 30000),
       receiveDataWhenStatusError: true,
       headers: {'isToken': pref.isKeyExists(PrefsConstants.keyAccessToken)},
+      validateStatus: (status) {
+        return status! < 500;
+      },
     );
     final dynamic dio = Dio(options);
     dio.interceptors.addAll(<Interceptor>[_loggingInterceptor()]);

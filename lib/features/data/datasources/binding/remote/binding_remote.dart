@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_clean_achitecture/core/env/config.dart';
 import 'package:flutter_clean_achitecture/core/error/failure.dart';
 import 'package:flutter_clean_achitecture/core/network/http_client.dart';
@@ -40,7 +43,7 @@ class BindingRemote implements BindingDataSource {
   }
 
   @override
-  Stream<Either<Failure, LoginEntity>> doLogin(LoginRequest request) async* {
+  Stream<Either<Failure, LoginResponse>> doLogin(LoginRequest request) async* {
     try {
       final response = await client.dio.post(
         '/v1/auth/login',
@@ -48,35 +51,40 @@ class BindingRemote implements BindingDataSource {
       );
 
       if (response.statusCode == 200) {
-        logger.d("success 200");
-        final data = LoginResponse.fromJson(response.data);
+        logger.d(
+            "REMOTE DATASOURCE: SUCCESS WITH STATUS CODE ${response.statusCode}");
+
+        final data = loginResponseFromJson(json.encode(response.data));
         // Create a LoginEntity object from the login response
-        final loginEntity = LoginEntity(
-          // Set the properties based on the response data
-          accessToken: data.accessToken,
-          tokenType: data.tokenType,
-          expiresIn: data.expiresIn,
-        );
-        yield Right(loginEntity);
+        logger.d("REMOTE DATASOURCE: SUCCESS ACCESS TOKEN ${data.accessToken}");
+
+        yield Right(data);
       } else if (response.statusCode == 422) {
-        logger.d("failed 422");
+        logger.d(
+            "REMOTE DATASOURCE: FAILED WITH STATUS CODE ${response.statusCode}");
         yield Left(
           RequestFailure(
-            code: response.statusCode,
             message: response.data["message"] ?? "Email or password inccorrect",
           ),
         );
       } else {
-        logger.d("failed 500");
         yield Left(
           ServerFailure(
-            error: response.data["message"] ?? "Something when wrong!",
+            message: response.data["message"] ?? "Something when wrong!",
           ),
         );
       }
-    } catch (error) {
-      logger.d("Error cacth");
-      yield Left(AnotherFailure(error: error.toString()));
+    } on DioError catch (e) {
+      if (e.response != null) {
+        logger.d('Dio error!');
+        logger.d('STATUS: ${e.response?.statusCode}');
+        logger.d('DATA: ${e.response?.data}');
+        logger.d('HEADERS: ${e.response?.headers}');
+      } else {
+        // Error due to setting up or sending the request
+        logger.d('Error sending request!');
+        logger.d(e.message);
+      }
     }
   }
 }

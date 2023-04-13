@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_clean_achitecture/features/common/constants/prefs_constant.dart';
 import 'package:flutter_clean_achitecture/features/data/datasources/binding/binding_datasource.dart';
 import 'package:flutter_clean_achitecture/features/data/datasources/binding/cache/shared_pref.dart';
-import 'package:flutter_clean_achitecture/features/domain/entities/login/login_entity.dart';
+import 'package:flutter_clean_achitecture/features/data/models/response/login_response.dart';
 import 'package:flutter_clean_achitecture/features/data/models/request/login_request.dart';
 
 class BindingLocal implements BindingDataSource {
@@ -37,7 +37,7 @@ class BindingLocal implements BindingDataSource {
   }
 
   @override
-  Stream<Either<Failure, LoginEntity>> doLogin(LoginRequest request) {
+  Stream<Either<Failure, LoginResponse>> doLogin(LoginRequest request) {
     throw UnimplementedError();
   }
 }

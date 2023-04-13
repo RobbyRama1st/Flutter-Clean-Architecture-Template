@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_clean_achitecture/main.dart';
 import 'package:rxdart/rxdart.dart';
@@ -17,10 +16,12 @@ abstract class UseCase<Type, Params> {
 
       if (error is Failure) {
         failure = error;
-      } else if (error is DioError) {
-        failure = ServerFailure(error: '$error');
+      } else if (error is RequestFailure) {
+        failure = RequestFailure(message: '$error.message');
+      } else if (error is ServerFailure) {
+        failure = ServerFailure(message: '$error.message');
       } else {
-        failure = AnotherFailure(error: '$error');
+        failure = AnotherFailure(message: '$error');
       }
 
       ///[return error value]

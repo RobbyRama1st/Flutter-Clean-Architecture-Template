@@ -1,5 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_clean_achitecture/features/domain/entities/login/login_entity.dart';
+
+LoginResponse loginResponseFromJson(String str) =>
+    LoginResponse.fromJson(json.decode(str));
+
+String loginResponseToJson(LoginResponse data) => json.encode(data.toJson());
 
 class LoginResponse extends LoginEntity {
   const LoginResponse({

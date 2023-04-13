@@ -37,11 +37,11 @@ class _LoginPageState extends State<LoginPage> {
           }
 
           if (state is LoginFailed) {
-            logger.d("Failed message ${state.message}");
+            logger.d("Login Failed: ${state.message}");
           }
 
           if (state is LoginSuccess) {
-            logger.d("Login Success");
+            logger.d("Login Success: token ${state.response.accessToken}");
           }
         },
         child: GestureDetector(
