@@ -2,31 +2,28 @@ import 'package:equatable/equatable.dart';
 
 class LoginEntity extends Equatable {
   const LoginEntity({
+    this.status,
+    this.data,
+  }) : super();
+
+  final bool? status;
+  final LoginDataEntity? data;
+
+  @override
+  List<Object?> get props => [status!, data!];
+}
+
+class LoginDataEntity extends Equatable {
+  const LoginDataEntity({
     this.accessToken,
     this.tokenType,
     this.expiresIn,
-    this.message,
-    this.errors,
   });
 
   final String? accessToken;
   final String? tokenType;
   final int? expiresIn;
-  final String? message;
-  final Errors? errors;
 
   @override
-  List<Object> get props =>
-      [accessToken!, tokenType!, expiresIn!, message!, errors!];
-}
-
-class Errors extends Equatable {
-  const Errors({
-    this.email,
-  });
-
-  final List<String>? email;
-
-  @override
-  List<Object?> get props => [email!];
+  List<Object> get props => [accessToken!, tokenType!, expiresIn!];
 }

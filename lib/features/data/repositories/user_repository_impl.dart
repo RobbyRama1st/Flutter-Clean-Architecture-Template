@@ -3,6 +3,7 @@ import 'package:flutter_clean_achitecture/core/error/failure.dart';
 import 'package:flutter_clean_achitecture/features/data/datasources/datasource_factory.dart';
 import 'package:flutter_clean_achitecture/features/data/models/request/login_request.dart';
 import 'package:flutter_clean_achitecture/features/data/models/response/login_response.dart';
+import 'package:flutter_clean_achitecture/features/domain/entities/login/login_entity.dart';
 import 'package:flutter_clean_achitecture/features/domain/repositories/user_repository.dart';
 
 import '../../../main.dart';

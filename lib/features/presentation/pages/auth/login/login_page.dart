@@ -41,7 +41,8 @@ class _LoginPageState extends State<LoginPage> {
           }
 
           if (state is LoginSuccess) {
-            logger.d("Login Success: token ${state.response.accessToken}");
+            logger
+                .d("Login Success: token ${state.response.data!.accessToken}");
           }
         },
         child: GestureDetector(

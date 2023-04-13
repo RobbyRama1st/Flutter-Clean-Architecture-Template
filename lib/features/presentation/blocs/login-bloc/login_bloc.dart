@@ -38,7 +38,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                 return LoginFailed(message ?? failure.toString());
               },
               (success) {
-                logger.d("bloc success: token ${success.accessToken}");
+                logger.d("bloc success: token ${success.data!.accessToken}");
                 return LoginSuccess(success);
               },
             );

@@ -54,11 +54,12 @@ class BindingRemote implements BindingDataSource {
         logger.d(
             "REMOTE DATASOURCE: SUCCESS WITH STATUS CODE ${response.statusCode}");
 
-        final data = loginResponseFromJson(json.encode(response.data));
-        // Create a LoginEntity object from the login response
-        logger.d("REMOTE DATASOURCE: SUCCESS ACCESS TOKEN ${data.accessToken}");
+        final loginResponse = loginResponseFromJson(json.encode(response.data));
 
-        yield Right(data);
+        logger.d(
+            "REMOTE DATASOURCE: SUCCESS ACCESS TOKEN ${loginResponse.data!.accessToken}");
+
+        yield Right(loginResponse);
       } else if (response.statusCode == 422) {
         logger.d(
             "REMOTE DATASOURCE: FAILED WITH STATUS CODE ${response.statusCode}");
